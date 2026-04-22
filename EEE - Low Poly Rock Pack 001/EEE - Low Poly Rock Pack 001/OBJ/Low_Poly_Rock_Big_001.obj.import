@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cu38bhu5gylq6"
+path="res://.godot/imported/Low_Poly_Rock_Big_001.obj-8ed7158a715a3ddc89fb6d03fdcdfadd.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Low_Poly_Rock_Big_001.obj-8ed7158a715a3ddc89fb6d03fdcdfadd.mesh"]
+
+source_file="res://EEE - Low Poly Rock Pack 001/EEE - Low Poly Rock Pack 001/OBJ/Low_Poly_Rock_Big_001.obj"
+dest_files=["res://.godot/imported/Low_Poly_Rock_Big_001.obj-8ed7158a715a3ddc89fb6d03fdcdfadd.mesh", "res://.godot/imported/Low_Poly_Rock_Big_001.obj-8ed7158a715a3ddc89fb6d03fdcdfadd.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
