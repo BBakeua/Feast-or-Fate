@@ -13,6 +13,10 @@ config_version=5
 config/name="Teda Wave"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/boujie_water_shader/plugin.cfg")
+
 [filesystem]
 
 import/blender/enabled=false

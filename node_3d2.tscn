@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cct6nbr1qfihw"]
+
+[ext_resource type="PackedScene" uid="uid://drgjkgnugo0gv" path="res://Boat/JetskiV1.fbx" id="1_toack"]
+
+[node name="Node3D" type="Node3D" unique_id=1842690802]
+
+[node name="JetskiV1" parent="." unique_id=2041827389 instance=ExtResource("1_toack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6738629, 0)
