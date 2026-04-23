@@ -1,3 +1,8 @@
 [gd_scene format=3 uid="uid://cm4ruil0kch25"]
 
+[ext_resource type="PackedScene" uid="uid://b1ifm0554gtdb" path="res://addons/boujie_water_shader/prefabs/outset_ocean.tscn" id="1_a202f"]
+
 [node name="Node3D" type="Node3D" unique_id=1006598795]
+
+[node name="OutsetOcean" parent="." unique_id=55271141 instance=ExtResource("1_a202f")]
+far_edge = 4000
