@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://caoth7tyh4x6a"]
+
+[ext_resource type="PackedScene" uid="uid://b5r7lew6l4hb0" path="res://fruitsandvegetables/fbx/applered01.fbx" id="1_jf6jp"]
+
+[node name="Apple" type="Node3D" unique_id=582927997]
+
+[node name="applered01" parent="." unique_id=1027224351 instance=ExtResource("1_jf6jp")]

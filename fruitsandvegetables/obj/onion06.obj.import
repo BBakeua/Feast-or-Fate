@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://boaprcghkb4vn"
+path="res://.godot/imported/onion06.obj-15b7889e36cfc7c60cbf65317b266761.mesh"
+
+[deps]
+
+files=["res://.godot/imported/onion06.obj-15b7889e36cfc7c60cbf65317b266761.mesh"]
+
+source_file="res://fruitsandvegetables/obj/onion06.obj"
+dest_files=["res://.godot/imported/onion06.obj-15b7889e36cfc7c60cbf65317b266761.mesh", "res://.godot/imported/onion06.obj-15b7889e36cfc7c60cbf65317b266761.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

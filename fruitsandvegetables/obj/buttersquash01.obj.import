@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://48535k4fy3o0"
+path="res://.godot/imported/buttersquash01.obj-fe870761f1f47532ca088c611a2c0433.mesh"
+
+[deps]
+
+files=["res://.godot/imported/buttersquash01.obj-fe870761f1f47532ca088c611a2c0433.mesh"]
+
+source_file="res://fruitsandvegetables/obj/buttersquash01.obj"
+dest_files=["res://.godot/imported/buttersquash01.obj-fe870761f1f47532ca088c611a2c0433.mesh", "res://.godot/imported/buttersquash01.obj-fe870761f1f47532ca088c611a2c0433.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

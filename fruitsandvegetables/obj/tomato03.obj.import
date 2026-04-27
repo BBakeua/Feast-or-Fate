@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dexm80as2aj63"
+path="res://.godot/imported/tomato03.obj-63bf40424e73a0614eeff0a9fea05bcb.mesh"
+
+[deps]
+
+files=["res://.godot/imported/tomato03.obj-63bf40424e73a0614eeff0a9fea05bcb.mesh"]
+
+source_file="res://fruitsandvegetables/obj/tomato03.obj"
+dest_files=["res://.godot/imported/tomato03.obj-63bf40424e73a0614eeff0a9fea05bcb.mesh", "res://.godot/imported/tomato03.obj-63bf40424e73a0614eeff0a9fea05bcb.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

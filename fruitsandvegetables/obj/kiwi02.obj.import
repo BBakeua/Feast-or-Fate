@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bqrvu6i3wal5x"
+path="res://.godot/imported/kiwi02.obj-b7160db1f180cca002a666c6c138b9b7.mesh"
+
+[deps]
+
+files=["res://.godot/imported/kiwi02.obj-b7160db1f180cca002a666c6c138b9b7.mesh"]
+
+source_file="res://fruitsandvegetables/obj/kiwi02.obj"
+dest_files=["res://.godot/imported/kiwi02.obj-b7160db1f180cca002a666c6c138b9b7.mesh", "res://.godot/imported/kiwi02.obj-b7160db1f180cca002a666c6c138b9b7.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cmpgfhxujtfax"
+path="res://.godot/imported/mushroom06.obj-740ec564a8085a0b4f777da3bfb4f804.mesh"
+
+[deps]
+
+files=["res://.godot/imported/mushroom06.obj-740ec564a8085a0b4f777da3bfb4f804.mesh"]
+
+source_file="res://fruitsandvegetables/obj/mushroom06.obj"
+dest_files=["res://.godot/imported/mushroom06.obj-740ec564a8085a0b4f777da3bfb4f804.mesh", "res://.godot/imported/mushroom06.obj-740ec564a8085a0b4f777da3bfb4f804.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

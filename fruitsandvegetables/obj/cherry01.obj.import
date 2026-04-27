@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dbqh8bnw1badj"
+path="res://.godot/imported/cherry01.obj-2edb2d395adb5d7b737a8e767d7a534d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cherry01.obj-2edb2d395adb5d7b737a8e767d7a534d.mesh"]
+
+source_file="res://fruitsandvegetables/obj/cherry01.obj"
+dest_files=["res://.godot/imported/cherry01.obj-2edb2d395adb5d7b737a8e767d7a534d.mesh", "res://.godot/imported/cherry01.obj-2edb2d395adb5d7b737a8e767d7a534d.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
