@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cct6nbr1qfihw"]
+
+[ext_resource type="Script" uid="uid://c7c0gswaseo3d" path="res://jet_ski.gd" id="1_b714g"]
+[ext_resource type="PackedScene" uid="uid://drgjkgnugo0gv" path="res://Boat/JetskiV1.fbx" id="1_toack"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yubqw"]
+size = Vector3(1, 0.83148193, 3.2580566)
+
+[node name="Jetski" type="CharacterBody3D" unique_id=2138062641]
+script = ExtResource("1_b714g")
+
+[node name="JetskiV1" parent="." unique_id=2041827389 instance=ExtResource("1_toack")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0.6738629, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1832554718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44003296, 0.03845215)
+shape = SubResource("BoxShape3D_yubqw")
