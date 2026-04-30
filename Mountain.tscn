@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dv1g0hwfjwif3"]
+
+[ext_resource type="PackedScene" uid="uid://cf557nb5ud7ll" path="res://Mounting_3.fbx" id="1_gimxn"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=781830104]
+
+[node name="Mounting_3" parent="." unique_id=1061181367 instance=ExtResource("1_gimxn")]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 2.6219196, 4.5545845, 3.451641)

@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cm4ruil0kch25" path="res://Ocean.tscn" id="1_3rksa"]
 [ext_resource type="PackedScene" uid="uid://cct6nbr1qfihw" path="res://JetSki.tscn" id="2_6lmrp"]
+[ext_resource type="PackedScene" uid="uid://b12l17ff1by2q" path="res://Trash/BolsaN1.fbx" id="3_6lmrp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3rksa"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -29,6 +30,10 @@ shadow_enabled = true
 
 [node name="Jetski" parent="." unique_id=2138062641 instance=ExtResource("2_6lmrp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.743584, 0.5075629, 48.966915)
+move_speed = 25.0
 
 [node name="Camera3D" type="Camera3D" parent="Jetski" unique_id=1243529204]
 transform = Transform3D(1, 0, 0, 0, 0.9122989, 0.409525, 0, -0.409525, 0.9122989, 0, 3.0232136, 5.3460503)
+
+[node name="BolsaN1" parent="." unique_id=570565249 instance=ExtResource("3_6lmrp")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 39.948532, 0, 28.725622)

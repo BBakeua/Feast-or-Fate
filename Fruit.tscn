@@ -5,3 +5,4 @@
 [node name="Apple" type="Node3D" unique_id=582927997]
 
 [node name="applered01" parent="." unique_id=1027224351 instance=ExtResource("1_jf6jp")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
