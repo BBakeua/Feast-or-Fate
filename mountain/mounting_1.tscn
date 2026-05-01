@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cqyl5lapyjsd0"]
+
+[ext_resource type="PackedScene" uid="uid://dvlsg6pvq01es" path="res://LowPoly Environment Pack/Mounting_1.fbx" id="1_siknk"]
+
+[node name="Mounting_1" unique_id=2143731619 instance=ExtResource("1_siknk")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)

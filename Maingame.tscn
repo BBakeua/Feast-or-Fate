@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://c173vqwjvn614"]
 
 [ext_resource type="PackedScene" uid="uid://cm4ruil0kch25" path="res://Ocean.tscn" id="1_3rksa"]
+[ext_resource type="Script" uid="uid://by0w4m05n456l" path="res://scrolling_world.gd" id="1_6i03u"]
+[ext_resource type="PackedScene" uid="uid://crldo1byhfntl" path="res://LowPoly Environment Pack/Mounting_2.fbx" id="1_hnhhy"]
 [ext_resource type="PackedScene" uid="uid://cct6nbr1qfihw" path="res://JetSki.tscn" id="2_6lmrp"]
+[ext_resource type="PackedScene" uid="uid://dv1g0hwfjwif3" path="res://Mountain.tscn" id="2_vw2ui"]
 [ext_resource type="PackedScene" uid="uid://b12l17ff1by2q" path="res://Trash/BolsaN1.fbx" id="3_6lmrp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3rksa"]
@@ -19,6 +22,19 @@ glow_enabled = true
 
 [node name="Main game" type="Node3D" unique_id=943324831]
 
+[node name="ScrollingWorld" type="Node3D" parent="." unique_id=263266239]
+script = ExtResource("1_6i03u")
+scenery_scenes = Array[PackedScene]([ExtResource("2_vw2ui")])
+
+[node name="BolsaN1" parent="ScrollingWorld" unique_id=570565249 instance=ExtResource("3_6lmrp")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 39.948532, 0, 28.725622)
+
+[node name="Mounting_2" parent="ScrollingWorld" unique_id=363787384 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -46.322678, -117.99318)
+
+[node name="Mounting_3" parent="ScrollingWorld" unique_id=1744161137 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, -264.77966, -46.845383, -404.41296)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1447410424]
 environment = SubResource("Environment_hnhhy")
 
@@ -29,11 +45,7 @@ shadow_enabled = true
 [node name="Node3D" parent="." unique_id=1006598795 instance=ExtResource("1_3rksa")]
 
 [node name="Jetski" parent="." unique_id=2138062641 instance=ExtResource("2_6lmrp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41.743584, 0.5075629, 48.966915)
-move_speed = 25.0
+lane_width = 50.0
 
 [node name="Camera3D" type="Camera3D" parent="Jetski" unique_id=1243529204]
 transform = Transform3D(1, 0, 0, 0, 0.9122989, 0.409525, 0, -0.409525, 0.9122989, 0, 3.0232136, 5.3460503)
-
-[node name="BolsaN1" parent="." unique_id=570565249 instance=ExtResource("3_6lmrp")]
-transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 39.948532, 0, 28.725622)
