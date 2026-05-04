@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://by0w4m05n456l" path="res://scrolling_world.gd" id="1_6i03u"]
 [ext_resource type="PackedScene" uid="uid://crldo1byhfntl" path="res://LowPoly Environment Pack/Mounting_2.fbx" id="1_hnhhy"]
 [ext_resource type="PackedScene" uid="uid://cct6nbr1qfihw" path="res://JetSki.tscn" id="2_6lmrp"]
-[ext_resource type="PackedScene" uid="uid://dv1g0hwfjwif3" path="res://Mountain.tscn" id="2_vw2ui"]
 [ext_resource type="PackedScene" uid="uid://b12l17ff1by2q" path="res://Trash/BolsaN1.fbx" id="3_6lmrp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3rksa"]
@@ -22,18 +21,170 @@ glow_enabled = true
 
 [node name="Main game" type="Node3D" unique_id=943324831]
 
-[node name="ScrollingWorld" type="Node3D" parent="." unique_id=263266239]
+[node name="ScrollingWorld" type="Node3D" parent="." unique_id=263266239 node_paths=PackedStringArray("jetski")]
 script = ExtResource("1_6i03u")
-scenery_scenes = Array[PackedScene]([ExtResource("2_vw2ui")])
+jetski = NodePath("../Jetski")
+scroll_speed = 400.0
+recycle_distance_ahead = 600.0
 
 [node name="BolsaN1" parent="ScrollingWorld" unique_id=570565249 instance=ExtResource("3_6lmrp")]
-transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 39.948532, 0, 28.725622)
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -1.4766922, 35.348038, -52.303665)
 
 [node name="Mounting_2" parent="ScrollingWorld" unique_id=363787384 instance=ExtResource("1_hnhhy")]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -46.322678, -117.99318)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -10.97464, -117.99318)
+
+[node name="Mounting_4" parent="ScrollingWorld" unique_id=1650300747 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, -264.77966, -10.97464, -727.99316)
 
 [node name="Mounting_3" parent="ScrollingWorld" unique_id=1744161137 instance=ExtResource("1_hnhhy")]
-transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, -264.77966, -46.845383, -404.41296)
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, -264.77966, -11.497345, -404.41296)
+
+[node name="Mounting_5" parent="ScrollingWorld" unique_id=967551904 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -10.97464, -919.8068)
+
+[node name="Mounting_6" parent="ScrollingWorld" unique_id=1824477297 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, -264.77966, -10.97464, -1529.8069)
+
+[node name="Mounting_7" parent="ScrollingWorld" unique_id=911066274 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, -264.77966, -11.497345, -1206.2266)
+
+[node name="Mounting_8" parent="ScrollingWorld" unique_id=2060094658 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, -264.7796, -10.97464, -3101.579)
+
+[node name="Mounting_9" parent="ScrollingWorld" unique_id=1164689046 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, -264.77966, -10.97464, -2491.579)
+
+[node name="Mounting_10" parent="ScrollingWorld" unique_id=147901729 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, -264.77963, -11.497345, -2815.1594)
+
+[node name="Mounting_11" parent="ScrollingWorld" unique_id=1751837308 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, -264.77966, -10.97464, -2299.7656)
+
+[node name="Mounting_12" parent="ScrollingWorld" unique_id=138518565 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, -264.77972, -10.97464, -1689.7656)
+
+[node name="Mounting_13" parent="ScrollingWorld" unique_id=1733354165 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, -264.7797, -11.497345, -2013.3457)
+
+[node name="Mounting_14" parent="ScrollingWorld" unique_id=1166615956 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, -264.7796, -10.97464, -3777.6917)
+
+[node name="Mounting_15" parent="ScrollingWorld" unique_id=2015115520 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, -264.77966, -10.97464, -3167.6917)
+
+[node name="Mounting_16" parent="ScrollingWorld" unique_id=676265341 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, -264.77963, -11.497345, -3491.272)
+
+[node name="Mounting_17" parent="ScrollingWorld" unique_id=377712321 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, -264.7797, -11.497345, -2689.4583)
+
+[node name="Mounting_18" parent="ScrollingWorld" unique_id=172028641 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, -264.77966, -10.97464, -2975.8782)
+
+[node name="BolsaN2" parent="ScrollingWorld" unique_id=77498789 instance=ExtResource("3_6lmrp")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 580.4413, 35.348038, -52.303665)
+
+[node name="Mounting_19" parent="ScrollingWorld" unique_id=1069238971 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 317.13828, -10.97464, -117.99318)
+
+[node name="Mounting_20" parent="ScrollingWorld" unique_id=511581237 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, 317.13828, -10.97464, -727.99316)
+
+[node name="Mounting_21" parent="ScrollingWorld" unique_id=2047752326 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, 317.13828, -11.497345, -404.41296)
+
+[node name="Mounting_22" parent="ScrollingWorld" unique_id=1417936312 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 317.13828, -10.97464, -919.8068)
+
+[node name="Mounting_23" parent="ScrollingWorld" unique_id=1914624584 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, 317.13828, -10.97464, -1529.8069)
+
+[node name="Mounting_24" parent="ScrollingWorld" unique_id=2065085960 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, 317.13828, -11.497345, -1206.2266)
+
+[node name="Mounting_25" parent="ScrollingWorld" unique_id=1579855209 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, 317.13834, -10.97464, -3101.579)
+
+[node name="Mounting_26" parent="ScrollingWorld" unique_id=942404025 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, 317.13828, -10.97464, -2491.579)
+
+[node name="Mounting_27" parent="ScrollingWorld" unique_id=11577206 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, 317.1383, -11.497345, -2815.1594)
+
+[node name="Mounting_28" parent="ScrollingWorld" unique_id=1640927566 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, 317.13828, -10.97464, -2299.7656)
+
+[node name="Mounting_29" parent="ScrollingWorld" unique_id=675151824 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, 317.1382, -10.97464, -1689.7656)
+
+[node name="Mounting_30" parent="ScrollingWorld" unique_id=63205048 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, 317.13824, -11.497345, -2013.3457)
+
+[node name="Mounting_31" parent="ScrollingWorld" unique_id=267076082 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, 317.13834, -10.97464, -3777.6917)
+
+[node name="Mounting_32" parent="ScrollingWorld" unique_id=1198992004 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, 317.13828, -10.97464, -3167.6917)
+
+[node name="Mounting_33" parent="ScrollingWorld" unique_id=2107193972 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, 317.1383, -11.497345, -3491.272)
+
+[node name="Mounting_34" parent="ScrollingWorld" unique_id=1155433757 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(4.341062, 0, 19.523195, 0, 20.000002, 0, -19.523195, 0, 4.341062, 317.13824, -11.497345, -2689.4583)
+
+[node name="Mounting_35" parent="ScrollingWorld" unique_id=681856373 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, 317.13828, -10.97464, -2975.8782)
+
+[node name="BolsaN3" parent="." unique_id=803858378 instance=ExtResource("3_6lmrp")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -1.4766922, 35.348038, 87.38286)
+
+[node name="Mounting_36" parent="." unique_id=728384747 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -10.97464, 1527.7103)
+
+[node name="Mounting_37" parent="." unique_id=1441727133 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, -264.77966, -10.97464, 917.7103)
+
+[node name="Mounting_38" parent="." unique_id=655411934 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, -264.77966, -11.497345, 1241.2905)
+
+[node name="Mounting_39" parent="." unique_id=2088575871 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -10.97464, 725.89667)
+
+[node name="Mounting_40" parent="." unique_id=1982895384 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, -264.77966, -10.97464, 115.89661)
+
+[node name="Mounting_41" parent="." unique_id=1980804478 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, -264.77966, -11.497345, 439.47693)
+
+[node name="Mounting_42" parent="." unique_id=230903443 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, -264.7796, -10.97464, -1455.8756)
+
+[node name="Mounting_43" parent="." unique_id=33453401 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, -264.77966, -10.97464, -845.8756)
+
+[node name="Mounting_44" parent="." unique_id=2124734080 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 319.88324, -10.97464, 1470.8547)
+
+[node name="Mounting_45" parent="." unique_id=350942583 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, 319.88324, -10.97464, 860.85474)
+
+[node name="Mounting_46" parent="." unique_id=2011487935 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, 319.88324, -11.497345, 1184.4349)
+
+[node name="Mounting_47" parent="." unique_id=1517610931 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 319.88324, -10.97464, 669.0411)
+
+[node name="Mounting_48" parent="." unique_id=2059551447 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(17.154482, 0, -10.282206, 0, 20, 0, 10.282206, 0, 17.154482, 319.88324, -10.97464, 59.041016)
+
+[node name="Mounting_49" parent="." unique_id=1899435188 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-4.3410606, 0, -19.523197, 0, 20, 0, 19.523197, 0, -4.3410606, 319.88324, -11.497345, 382.62134)
+
+[node name="Mounting_50" parent="." unique_id=1817257461 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20, 319.8833, -10.97464, -1512.7312)
+
+[node name="Mounting_51" parent="." unique_id=656696106 instance=ExtResource("1_hnhhy")]
+transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, 319.88324, -10.97464, -902.7312)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1447410424]
 environment = SubResource("Environment_hnhhy")

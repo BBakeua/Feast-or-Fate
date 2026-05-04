@@ -1,63 +1,43 @@
 extends Node3D
 
-# --- Scroll ---
-@export var scroll_speed       : float = 12.0
+## Scrolling World Script
+## Attach this to your "Scrolling World" node.
+## All children scroll along the -Z axis and recycle to the back when off-screen.
 
-# --- Spawn timing ---
-@export var spawn_interval     : float = 2.0   # seconds between spawn waves
-@export var spawn_distance     : float = 60.0  # how far ahead to spawn
-@export var despawn_distance   : float = 20.0  # how far behind player to despawn
+@export var jetski: CharacterBody3D          ## Drag your Jetski node here
+@export var scroll_speed: float = 10.0       ## Units per second
+@export var offscreen_threshold: float = 10.0      ## How far behind the jetski before recycling
+@export var recycle_distance_ahead: float = 50.0   ## How far ahead to place recycled pieces
 
-# --- Lane ---
-@export var side_offset_min    : float = 8.0   # closest to centre scenery spawns
-@export var side_offset_max    : float = 18.0  # furthest from centre
+var _children: Array[Node3D] = []
 
-# --- Models (assign in Inspector) ---
-@export var scenery_scenes     : Array[PackedScene] = []  # mountains, rocks, trees…
-
-# --- Internal ---
-var _timer        : float = 0.0
-var _active       : Array[Node3D] = []
-var _player       : Node3D          # auto-found, or assign manually
 
 func _ready() -> void:
-	_player = get_tree().get_first_node_in_group("player")
+	for child in get_children():
+		if child is Node3D:
+			_children.append(child as Node3D)
 
-func _process(delta: float) -> void:
-	if scenery_scenes.is_empty():
+
+func _physics_process(delta: float) -> void:
+	if not jetski:
+		push_warning("ScrollingWorld: No Jetski assigned!")
 		return
 
-	# Scroll all active scenery toward the player
-	for node in _active:
-		node.global_position.z += scroll_speed * delta
+	for piece in _children:
+		# Move along +Z axis
+		piece.global_position.z += scroll_speed * delta
 
-	# Despawn anything that has passed the player
-	var player_z := _player.global_position.z if _player else 0.0
-	_active = _active.filter(func(n):
-		if n.global_position.z > player_z + despawn_distance:
-			n.queue_free()
-			return false
-		return true
-	)
+		# Check if piece has gone too far behind the jetski
+		if piece.global_position.z > jetski.global_position.z + offscreen_threshold:
+			_recycle(piece)
 
-	# Spawn new wave on a timer
-	_timer += delta
-	if _timer >= spawn_interval:
-		_timer = 0.0
-		_spawn_wave(player_z)
 
-func _spawn_wave(player_z: float) -> void:
-	# Spawn one on each side per wave
-	for side in [-1, 1]:
-		var scene : PackedScene = scenery_scenes.pick_random()
-		var instance : Node3D = scene.instantiate()
-		add_child(instance)
+func _recycle(piece: Node3D) -> void:
+	# Find the farthest piece ahead on -Z (lowest Z = furthest ahead)
+	var farthest_z := INF
+	for other in _children:
+		if other.global_position.z < farthest_z:
+			farthest_z = other.global_position.z
 
-		var offset_x = randf_range(side_offset_min, side_offset_max) * side
-		var spawn_z   := player_z - spawn_distance   # ahead = negative Z
-		instance.global_position = Vector3(offset_x, 0.0, spawn_z)
-
-		# Random Y rotation so they don't all face the same way
-		instance.rotation.y = randf_range(-PI, PI)
-
-		_active.append(instance)
+	# Place this piece just beyond the farthest one
+	piece.global_position.z = farthest_z - recycle_distance_ahead
