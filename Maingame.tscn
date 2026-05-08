@@ -20,11 +20,9 @@ glow_enabled = true
 
 [node name="Main game" type="Node3D" unique_id=943324831]
 
-[node name="ScrollingWorld" type="Node3D" parent="." unique_id=263266239 node_paths=PackedStringArray("jetski")]
+[node name="ScrollingWorld" type="Node3D" parent="." unique_id=263266239]
 script = ExtResource("1_6i03u")
-jetski = NodePath("../Jetski")
 scroll_speed = 400.0
-recycle_distance_ahead = 600.0
 
 [node name="Mounting_2" parent="ScrollingWorld" unique_id=363787384 instance=ExtResource("1_hnhhy")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -264.77966, -10.97464, -117.99318)
