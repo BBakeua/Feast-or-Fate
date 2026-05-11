@@ -35,6 +35,12 @@ steer_left={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Main_game"
+3d_physics/layer_2="Jetski"
+3d_physics/layer_5="invisible_wall"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

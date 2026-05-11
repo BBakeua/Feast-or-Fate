@@ -9,7 +9,7 @@ size = Vector3(1, 0.83148193, 3.2580566)
 [node name="Jetski" type="CharacterBody3D" unique_id=2138062641]
 script = ExtResource("1_b714g")
 
-[node name="JetskiV1" parent="." unique_id=2041827389 instance=ExtResource("1_toack")]
+[node name="JetskiV1" parent="." unique_id=1327681446 instance=ExtResource("1_toack")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0.6738629, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1832554718]
