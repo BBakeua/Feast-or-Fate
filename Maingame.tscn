@@ -1,10 +1,10 @@
-[gd_scene format=3 uid="uid://c173vqwjvn614"]
+[gd_scene format=4 uid="uid://c173vqwjvn614"]
 
-[ext_resource type="PackedScene" uid="uid://cm4ruil0kch25" path="res://Ocean.tscn" id="1_3rksa"]
 [ext_resource type="Script" uid="uid://by0w4m05n456l" path="res://scrolling_world.gd" id="1_6i03u"]
 [ext_resource type="PackedScene" uid="uid://crldo1byhfntl" path="res://LowPoly Environment Pack/Mounting_2.fbx" id="1_hnhhy"]
+[ext_resource type="Script" uid="uid://8gyrmnku2s8n" path="res://maingame.gd" id="1_vw2ui"]
 [ext_resource type="PackedScene" uid="uid://cct6nbr1qfihw" path="res://JetSki.tscn" id="2_6lmrp"]
-[ext_resource type="Script" uid="uid://cy2re7bd6l7vn" path="res://invisible_wall.gd" id="5_6i03u"]
+[ext_resource type="PackedScene" uid="uid://b1ifm0554gtdb" path="res://addons/boujie_water_shader/prefabs/outset_ocean.tscn" id="4_6i03u"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3rksa"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -19,7 +19,24 @@ sky = SubResource("Sky_6lmrp")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="ArrayMesh" id="ArrayMesh_hnhhy"]
+_surfaces = [{
+"aabb": AABB(-125.98474, -51.176056, -6.0150175, 251.96948, 102.35211, 12.030035),
+"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
+"format": 34359738391,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("MPj7wki0TMIGe8BAMPj7wki0TMIGe8DAMPj7wki0TEIGe8DAMPj7Qki0TMIGe8DAMPj7wki0TMIGe8DAMPj7wki0TMIGe8BAMPj7wki0TEIGe8DAMPj7wki0TMIGe8DAMPj7Qki0TMIGe8DAMPj7wki0TEIGe8DAMPj7wki0TEIGe8BAMPj7wki0TMIGe8BAMPj7wki0TMIGe8BAMPj7wki0TEIGe8BAMPj7Qki0TEIGe8BAMPj7Qki0TEIGe8BAMPj7wki0TEIGe8BAMPj7wki0TEIGe8DAMPj7wki0TMIGe8BAMPj7Qki0TMIGe8BAMPj7Qki0TMIGe8DAMPj7Qki0TEIGe8BAMPj7Qki0TMIGe8BAMPj7wki0TMIGe8BAMPj7Qki0TMIGe8DAMPj7Qki0TMIGe8BAMPj7Qki0TEIGe8BAMPj7Qki0TMIGe8DAMPj7Qki0TEIGe8DAMPj7wki0TEIGe8DAMPj7wki0TEIGe8DAMPj7Qki0TEIGe8DAMPj7Qki0TEIGe8BAMPj7Qki0TEIGe8BAMPj7Qki0TEIGe8DAMPj7Qki0TMIGe8DAAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
+}]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6i03u"]
+data = PackedVector3Array(-125.984695, -51.176098, 6.015, -125.984695, -51.176098, -6.015, -125.984695, 51.176098, -6.015, 125.984695, -51.176098, -6.015, -125.984695, -51.176098, -6.015, -125.984695, -51.176098, 6.015, -125.984695, 51.176098, -6.015, -125.984695, -51.176098, -6.015, 125.984695, -51.176098, -6.015, -125.984695, 51.176098, -6.015, -125.984695, 51.176098, 6.015, -125.984695, -51.176098, 6.015, -125.984695, -51.176098, 6.015, -125.984695, 51.176098, 6.015, 125.984695, 51.176098, 6.015, 125.984695, 51.176098, 6.015, -125.984695, 51.176098, 6.015, -125.984695, 51.176098, -6.015, -125.984695, -51.176098, 6.015, 125.984695, -51.176098, 6.015, 125.984695, -51.176098, -6.015, 125.984695, 51.176098, 6.015, 125.984695, -51.176098, 6.015, -125.984695, -51.176098, 6.015, 125.984695, -51.176098, -6.015, 125.984695, -51.176098, 6.015, 125.984695, 51.176098, 6.015, 125.984695, -51.176098, -6.015, 125.984695, 51.176098, -6.015, -125.984695, 51.176098, -6.015, -125.984695, 51.176098, -6.015, 125.984695, 51.176098, -6.015, 125.984695, 51.176098, 6.015, 125.984695, 51.176098, 6.015, 125.984695, 51.176098, -6.015, 125.984695, -51.176098, -6.015)
+
+[sub_resource type="SphereMesh" id="SphereMesh_hnhhy"]
+
 [node name="Main game" type="Node3D" unique_id=943324831]
+script = ExtResource("1_vw2ui")
 
 [node name="ScrollingWorld" type="Node3D" parent="." unique_id=263266239]
 script = ExtResource("1_6i03u")
@@ -175,6 +192,9 @@ transform = Transform3D(-20, 0, 1.7484556e-06, 0, 20, 0, -1.7484556e-06, 0, -20,
 [node name="Mounting_51" parent="ScrollingWorld" unique_id=656696106 instance=ExtResource("1_hnhhy")]
 transform = Transform3D(-17.154482, 0, 10.2822075, 0, 20, 0, -10.2822075, 0, -17.154482, 319.88324, -10.97464, -902.7312)
 
+[node name="OutsetOcean" parent="ScrollingWorld" unique_id=1848042374 instance=ExtResource("4_6i03u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.694704, 0, 4.9312997)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1447410424]
 environment = SubResource("Environment_hnhhy")
 
@@ -182,18 +202,34 @@ environment = SubResource("Environment_hnhhy")
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Node3D" parent="." unique_id=1006598795 instance=ExtResource("1_3rksa")]
-
 [node name="Jetski" parent="." unique_id=2138062641 instance=ExtResource("2_6lmrp")]
+strafe_speed = 10000.0
+strafe_accel = 2000.0
 lane_width = 50.0
 
 [node name="Camera3D" type="Camera3D" parent="Jetski" unique_id=1243529204]
 transform = Transform3D(1, 0, 0, 0, 0.9122989, 0.409525, 0, -0.409525, 0.9122989, 0, 3.0232136, 5.3460503)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=269986110]
-transform = Transform3D(-0.07212419, 0, 0.99739563, 0, 1, 0, -0.99739563, 0, -0.07212419, -7.4898887, 4.4818897, -3.1913452)
-use_collision = true
-collision_layer = 2
-collision_mask = 17
-size = Vector3(45.640152, 15.616333, 12.030035)
-script = ExtResource("5_6i03u")
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="." unique_id=389255658]
+transform = Transform3D(-0.07212419, 0, 0.99739563, 0, 1, 0, -0.99739563, 0, -0.07212419, -41.047695, 47.849777, 4.658394)
+visible = false
+mesh = SubResource("ArrayMesh_hnhhy")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D" unique_id=166250412]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D/StaticBody3D" unique_id=1342479611]
+shape = SubResource("ConcavePolygonShape3D_6i03u")
+
+[node name="CSGBakedMeshInstance3D2" type="MeshInstance3D" parent="." unique_id=611122059]
+transform = Transform3D(-0.07212419, 0, 0.99739563, 0, 1, 0, -0.99739563, 0, -0.07212419, 102.97412, 47.849777, 4.658394)
+visible = false
+mesh = SubResource("ArrayMesh_hnhhy")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D2" unique_id=1774036274]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D2/StaticBody3D" unique_id=804875984]
+shape = SubResource("ConcavePolygonShape3D_6i03u")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=877853863]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9679756, -11.060986)
+mesh = SubResource("SphereMesh_hnhhy")
