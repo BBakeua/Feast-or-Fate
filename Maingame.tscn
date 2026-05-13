@@ -5,6 +5,10 @@
 [ext_resource type="Script" uid="uid://8gyrmnku2s8n" path="res://maingame.gd" id="1_vw2ui"]
 [ext_resource type="PackedScene" uid="uid://cct6nbr1qfihw" path="res://JetSki.tscn" id="2_6lmrp"]
 [ext_resource type="PackedScene" uid="uid://b1ifm0554gtdb" path="res://addons/boujie_water_shader/prefabs/outset_ocean.tscn" id="4_6i03u"]
+[ext_resource type="PackedScene" uid="uid://caoth7tyh4x6a" path="res://Fruit.tscn" id="6_j63qi"]
+[ext_resource type="PackedScene" uid="uid://c1mus33b2x8d7" path="res://Rock_6.fbx" id="7_8lsbf"]
+[ext_resource type="PackedScene" uid="uid://cttvqq3g0to6c" path="res://Rock_4.fbx" id="8_y2ob7"]
+[ext_resource type="PackedScene" uid="uid://df4c02joktn3r" path="res://Rock_3.fbx" id="9_ue41v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3rksa"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -32,8 +36,6 @@ _surfaces = [{
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6i03u"]
 data = PackedVector3Array(-125.984695, -51.176098, 6.015, -125.984695, -51.176098, -6.015, -125.984695, 51.176098, -6.015, 125.984695, -51.176098, -6.015, -125.984695, -51.176098, -6.015, -125.984695, -51.176098, 6.015, -125.984695, 51.176098, -6.015, -125.984695, -51.176098, -6.015, 125.984695, -51.176098, -6.015, -125.984695, 51.176098, -6.015, -125.984695, 51.176098, 6.015, -125.984695, -51.176098, 6.015, -125.984695, -51.176098, 6.015, -125.984695, 51.176098, 6.015, 125.984695, 51.176098, 6.015, 125.984695, 51.176098, 6.015, -125.984695, 51.176098, 6.015, -125.984695, 51.176098, -6.015, -125.984695, -51.176098, 6.015, 125.984695, -51.176098, 6.015, 125.984695, -51.176098, -6.015, 125.984695, 51.176098, 6.015, 125.984695, -51.176098, 6.015, -125.984695, -51.176098, 6.015, 125.984695, -51.176098, -6.015, 125.984695, -51.176098, 6.015, 125.984695, 51.176098, 6.015, 125.984695, -51.176098, -6.015, 125.984695, 51.176098, -6.015, -125.984695, 51.176098, -6.015, -125.984695, 51.176098, -6.015, 125.984695, 51.176098, -6.015, 125.984695, 51.176098, 6.015, 125.984695, 51.176098, 6.015, 125.984695, 51.176098, -6.015, 125.984695, -51.176098, -6.015)
-
-[sub_resource type="SphereMesh" id="SphereMesh_hnhhy"]
 
 [node name="Main game" type="Node3D" unique_id=943324831]
 script = ExtResource("1_vw2ui")
@@ -230,6 +232,14 @@ mesh = SubResource("ArrayMesh_hnhhy")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D2/StaticBody3D" unique_id=804875984]
 shape = SubResource("ConcavePolygonShape3D_6i03u")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=877853863]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9679756, -11.060986)
-mesh = SubResource("SphereMesh_hnhhy")
+[node name="Apple" parent="." unique_id=582927997 instance=ExtResource("6_j63qi")]
+transform = Transform3D(5.4181023, 0, 0, 0, 4.9522104, 0, 0, 0, 2.5185633, -0.089087486, 2.2220116, -38.414078)
+
+[node name="Rock_6" parent="." unique_id=63633614 instance=ExtResource("7_8lsbf")]
+transform = Transform3D(2.915512, 0, 0, 0, 2.7894034, 0, 0, 0, 2.3175592, 25.301895, -1.9073486e-06, -61.49173)
+
+[node name="Rock_4" parent="." unique_id=430145554 instance=ExtResource("8_y2ob7")]
+transform = Transform3D(6.231538, 0, 0, 0, 7.0516796, 0, 0, 0, -5.726048, 40.817112, 0, -74.53495)
+
+[node name="Rock_3" parent="." unique_id=1241768355 instance=ExtResource("9_ue41v")]
+transform = Transform3D(0.1711358, 0, 9.445254, 0, 17.485502, 0, -9.697652, 0, 0.16668145, 2.2626438, -1.6217098, -29.538113)
