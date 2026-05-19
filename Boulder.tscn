@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bp1xf6stfkoat"]
+
+[ext_resource type="PackedScene" uid="uid://bq30g66unerek" path="res://EEE - Low Poly Rock Pack 001/EEE - Low Poly Rock Pack 001/FBX/Low_Poly_Rock_Boulder.fbx" id="1_ad4ms"]
+[ext_resource type="Script" uid="uid://dkwyqbx1sicnu" path="res://boulder.gd" id="1_cyt5i"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jpkmr"]
+margin = 0.0
+radius = 1.4460573
+
+[node name="Area3D" type="Area3D" unique_id=1003178739]
+script = ExtResource("1_cyt5i")
+
+[node name="Low_Poly_Rock_Boulder" parent="." unique_id=1036190706 instance=ExtResource("1_ad4ms")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=839994290]
+shape = SubResource("SphereShape3D_jpkmr")
