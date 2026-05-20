@@ -5,4 +5,3 @@
 [node name="Node3D" type="Node3D" unique_id=1006598795]
 
 [node name="OutsetOcean" parent="." unique_id=55271141 instance=ExtResource("1_a202f")]
-far_edge = 4000

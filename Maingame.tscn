@@ -238,6 +238,6 @@ collectable_scenes = Array[PackedScene]([ExtResource("6_j63qi")])
 spawn_distance = 60.0
 lane_width = 25.0
 
-[node name="Node3D" type="Node3D" parent="." unique_id=639188986]
+[node name="ObstacleSpawner" type="Node3D" parent="." unique_id=639188986]
 script = ExtResource("8_1r4ji")
 obstacle_scenes = Array[PackedScene]([ExtResource("9_j63qi")])

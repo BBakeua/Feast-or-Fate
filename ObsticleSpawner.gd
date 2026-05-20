@@ -1,85 +1,56 @@
 extends Node3D
-## ObstacleSpawner.gd
-## Attach to a Node3D in your scene. Randomly spawns obstacles ahead of the
-## player and scrolls them toward/past the player on the Z axis.
-##
-## SETUP:
-##   1. Create one or more MeshInstance3D obstacle scenes (or PackedScenes).
-##      Add a CollisionShape3D sibling inside a StaticBody3D (or RigidBody3D).
-##   2. Assign those PackedScenes to `obstacle_scenes` in the Inspector.
-##   3. Set `player` to your player Node3D (or leave null to use the spawner's
-##      own position as the reference point).
-##   4. Tweak the exported variables to suit your game's feel.
 
-# ── Exported tunables ────────────────────────────────────────────────────────
-
-## PackedScenes to choose from when spawning. Add as many variants as you like.
 @export var obstacle_scenes: Array[PackedScene] = []
-
-## How many units ahead of the player (on the -Z axis) obstacles first appear.
 @export var spawn_distance: float = 40.0
-
-## Obstacles are destroyed once they pass this many units behind the player.
 @export var despawn_distance: float = 10.0
-
-## Seconds between each spawn attempt.
 @export var spawn_interval: float = 1.2
-
-## How fast obstacles travel toward the player (units per second).
-## Increase over time with `scroll_speed` to ramp up difficulty.
 @export var scroll_speed: float = 8.0
-
-## Maximum speed the scroller will accelerate to.
 @export var max_scroll_speed: float = 24.0
-
-## How many units per second the scroll speed increases.
 @export var speed_ramp: float = 0.5
-
-## Half-width of the random lane spread on the X axis.
 @export var lane_spread_x: float = 3.0
-
-## Half-width of the random lane spread on the Y axis (set 0 for flat ground).
 @export var lane_spread_y: float = 0.0
-
-## Optional reference to the player node. Obstacles spawn relative to it.
-## Leave empty to use the spawner's own position as the origin.
 @export var player: Node3D = null
-
-## Group name the Jetski belongs to. Add the Jetski to this group via
-## Inspector → Node → Groups. Leave empty to treat any CharacterBody3D as the player.
 @export var jetski_group: String = "jetski"
-
-## Seconds to wait before reloading the scene after a collision.
 @export var restart_delay: float = 0.4
-
-# ── Internal state ───────────────────────────────────────────────────────────
 
 var _active_obstacles: Array[Node3D] = []
 var _spawn_timer: float = 0.0
-var _hit: bool = false   # prevents double-triggering
-
-# ── Lifecycle ────────────────────────────────────────────────────────────────
+var _hit: bool = false
 
 func _ready() -> void:
 	if obstacle_scenes.is_empty():
 		push_warning("ObstacleSpawner: no obstacle_scenes assigned!")
 
-
 func _process(delta: float) -> void:
-	# Ramp up speed over time.
 	scroll_speed = minf(scroll_speed + speed_ramp * delta, max_scroll_speed)
-
-	# Spawn timer.
 	_spawn_timer -= delta
 	if _spawn_timer <= 0.0:
 		_spawn_timer = spawn_interval
 		_try_spawn()
-
-	# Move & cull existing obstacles.
 	_scroll_obstacles(delta)
 
+# Runs every physics tick to check Area3D overlaps on each obstacle.
+func _physics_process(_delta: float) -> void:
+	if _hit:
+		return
+	for obs in _active_obstacles:
+		if is_instance_valid(obs):
+			_check_collision(obs)
 
-# ── Spawning ─────────────────────────────────────────────────────────────────
+func _check_collision(obs: Node3D) -> void:
+	# Walk the obstacle's children looking for any Area3D nodes.
+	for child in obs.get_children():
+		if child is Area3D:
+			for body in (child as Area3D).get_overlapping_bodies():
+				if _is_jetski(body):
+					_on_jetski_hit()
+					return
+
+func _is_jetski(node: Node) -> bool:
+	if not jetski_group.is_empty():
+		return node.is_in_group(jetski_group)
+	# Fallback: any CharacterBody3D counts as the player.
+	return node is CharacterBody3D
 
 func _try_spawn() -> void:
 	if obstacle_scenes.is_empty():
@@ -93,23 +64,17 @@ func _try_spawn() -> void:
 
 	get_tree().current_scene.add_child(instance)
 
-	# Position the new obstacle ahead of the player.
 	var origin: Vector3 = _player_position()
 	instance.global_position = Vector3(
 		origin.x + randf_range(-lane_spread_x, lane_spread_x),
 		origin.y + randf_range(-lane_spread_y, lane_spread_y),
-		origin.z - spawn_distance          # negative Z = "in front" (Godot default)
+		origin.z - spawn_distance
 	)
 
 	_active_obstacles.append(instance)
 
-	# If the obstacle has a jetski_hit signal (from Obstacle.gd), connect it
-	# here as a backup so the spawner can also handle the restart centrally.
 	if instance.has_signal("jetski_hit") and not instance.jetski_hit.is_connected(_on_jetski_hit):
 		instance.jetski_hit.connect(_on_jetski_hit)
-
-
-# ── Scrolling & culling ───────────────────────────────────────────────────────
 
 func _scroll_obstacles(delta: float) -> void:
 	var origin_z: float = _player_position().z
@@ -120,78 +85,69 @@ func _scroll_obstacles(delta: float) -> void:
 			to_remove.append(obs)
 			continue
 
-		# Move the obstacle toward the player (+Z direction).
 		obs.global_position.z += scroll_speed * delta
 
-		# Despawn once it has passed the player by despawn_distance.
 		if obs.global_position.z > origin_z + despawn_distance:
 			obs.queue_free()
 			to_remove.append(obs)
 			continue
 
-		# ── Proximity collision check ─────────────────────────────────────────
-		# Fallback: if Obstacle.gd's Area3D signal hasn't fired (e.g. the
-		# obstacle scene has no Obstacle.gd attached), check distance to the
-		# player directly. Triggers when the obstacle centre is within 1.5 units.
-		if not _hit and player != null and is_instance_valid(player):
-			if obs.global_position.distance_to(player.global_position) < 1.5:
+		# Proximity fallback — also resolves the player node on the fly via
+		# the jetski group if no direct reference was assigned.
+		if not _hit:
+			var target: Node3D = _resolve_player()
+			if target != null and obs.global_position.distance_to(target.global_position) < 1.5:
 				_on_jetski_hit()
 
 	for obs in to_remove:
 		_active_obstacles.erase(obs)
 
-
-# ── Helper ────────────────────────────────────────────────────────────────────
+func _resolve_player() -> Node3D:
+	if player != null and is_instance_valid(player):
+		return player
+	# Try to find the jetski by group as a fallback.
+	if not jetski_group.is_empty():
+		var members := get_tree().get_nodes_in_group(jetski_group)
+		if not members.is_empty() and members[0] is Node3D:
+			return members[0] as Node3D
+	return null
 
 func _player_position() -> Vector3:
-	if player != null and is_instance_valid(player):
-		return player.global_position
+	var target := _resolve_player()
+	if target != null:
+		return target.global_position
 	return global_position
 
-
-# ── Public API ────────────────────────────────────────────────────────────────
-
-## Call this to instantly remove all active obstacles (e.g. on game over).
 func clear_all() -> void:
 	for obs in _active_obstacles:
 		if is_instance_valid(obs):
 			obs.queue_free()
 	_active_obstacles.clear()
 
-
-## Pause / resume spawning without removing the node.
 func set_spawning(enabled: bool) -> void:
 	set_process(enabled)
+	set_physics_process(enabled)
 
-
-# ── Collision & restart ───────────────────────────────────────────────────────
-
-## Called either by Obstacle.gd's jetski_hit signal or the proximity check above.
 func _on_jetski_hit(_unused = null) -> void:
 	if _hit:
 		return
 	_hit = true
 	set_spawning(false)
 
-	if player != null and is_instance_valid(player):
-		_kill_jetski(player)
+	var target := _resolve_player()
+	if target != null:
+		_kill_jetski(target)
 	else:
-		# No player reference — just restart after the delay.
 		get_tree().create_timer(restart_delay).timeout.connect(_restart_scene)
 
-
 func _kill_jetski(jetski: Node3D) -> void:
-	# Freeze movement instantly.
 	if jetski is CharacterBody3D:
 		(jetski as CharacterBody3D).velocity = Vector3.ZERO
 		jetski.set_physics_process(false)
 		jetski.set_process(false)
 
-	# Hide the Jetski for an instant "death" visual.
 	jetski.visible = false
-
 	get_tree().create_timer(restart_delay).timeout.connect(_restart_scene)
-
 
 func _restart_scene() -> void:
 	get_tree().reload_current_scene()
