@@ -1,5 +1,13 @@
 # Spawner.gd
-extends Node3D
+# Fruit.gd
+extends Area3D
+
+func _ready():
+	body_entered.connect(_on_body_entered)
+
+func _on_body_entered(body: Node3D) -> void:
+	if body is CharacterBody3D:
+		queue_free()
 
 @export var collectable_scenes: Array[PackedScene]  # drag multiple scenes in here
 @export var spawn_distance: float = 30.0

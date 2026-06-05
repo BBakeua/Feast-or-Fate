@@ -236,6 +236,7 @@ shape = SubResource("ConcavePolygonShape3D_6i03u")
 script = ExtResource("10_8lsbf")
 collectable_scenes = Array[PackedScene]([ExtResource("6_j63qi")])
 spawn_distance = 60.0
+spawn_interval = null
 lane_width = 25.0
 
 [node name="ObstacleSpawner" type="Node3D" parent="." unique_id=639188986]
