@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://8gyrmnku2s8n" path="res://maingame.gd" id="1_vw2ui"]
 [ext_resource type="PackedScene" uid="uid://cct6nbr1qfihw" path="res://JetSki.tscn" id="2_6lmrp"]
 [ext_resource type="PackedScene" uid="uid://b1ifm0554gtdb" path="res://addons/boujie_water_shader/prefabs/outset_ocean.tscn" id="4_6i03u"]
-[ext_resource type="PackedScene" uid="uid://caoth7tyh4x6a" path="res://Fruit.tscn" id="6_j63qi"]
 [ext_resource type="Script" uid="uid://cu3go4ax5k1f3" path="res://ObsticleSpawner.gd" id="8_1r4ji"]
 [ext_resource type="PackedScene" uid="uid://bp1xf6stfkoat" path="res://Boulder.tscn" id="9_j63qi"]
 [ext_resource type="Script" uid="uid://e7cbc46dvpc6" path="res://pickups_spawner.gd" id="10_8lsbf"]
@@ -234,10 +233,6 @@ shape = SubResource("ConcavePolygonShape3D_6i03u")
 
 [node name="PickupsSpawner" type="Node3D" parent="." unique_id=358264702]
 script = ExtResource("10_8lsbf")
-collectable_scenes = Array[PackedScene]([ExtResource("6_j63qi")])
-spawn_distance = 60.0
-spawn_interval = null
-lane_width = 25.0
 
 [node name="ObstacleSpawner" type="Node3D" parent="." unique_id=639188986]
 script = ExtResource("8_1r4ji")
