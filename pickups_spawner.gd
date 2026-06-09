@@ -1,137 +1,90 @@
 extends Node3D
-## ObstacleSpawner.gd
-## Attach to a Node3D in your scene.
-## Randomly spawns obstacles ahead of the player and scrolls them toward/past it.
-##
-## SETUP:
-##   1. Create one or more obstacle scenes (e.g. a CSGBox3D or MeshInstance3D +
-##      CollisionShape3D inside a StaticBody3D). Save each as a .tscn file.
-##   2. Add those .tscn paths to `obstacle_scenes` in the Inspector.
-##   3. Set `player` to your player node in the Inspector (or leave null to use
-##      the node's own position as the reference point).
-##   4. Optionally add an Area3D named "DeathZone" on your player to detect hits.
 
-# ── Inspector-exposed settings ────────────────────────────────────────────────
+# ─────────────────────────────────────────
+#  Fruit Spawner – attach to your Jetski Node3D
+# ─────────────────────────────────────────
 
-## Packed scenes to use as obstacles. Add at least one!
-@export var obstacle_scenes: Array[PackedScene] = []
+## How far ahead of the Jetski fruit will spawn (metres)
+@export var spawn_distance: float = 15.0
 
-## How far ahead of the player obstacles spawn (Z units, positive = in front).
-@export var spawn_distance: float = 40.0
+## Half-width of the random spread (left/right of forward direction)
+@export var spawn_spread: float = 6.0
 
-## How far behind the player a passed obstacle is freed.
-@export var despawn_distance: float = 10.0
+## Min / max height offset from the Jetski's position
+@export var spawn_height_min: float = 0.0
+@export var spawn_height_max: float = 0.5
 
-## Horizontal range obstacles can spawn within (±x_spread around player X).
-@export var x_spread: float = 3.0
+## Seconds between spawns
+@export var spawn_interval: float = 2.0
 
-## Fixed Y position obstacles spawn at (ground level).
-@export var spawn_y: float = 0.0
+## How many fruit can exist at once (older ones are removed)
+@export var max_fruit: int = 10
 
-## Seconds between spawns (randomised between min and max).
-@export var spawn_interval_min: float = 1.2
-@export var spawn_interval_max: float = 2.8
+## Drag your Fruit scene (.tscn) into this slot in the Inspector
+@export var fruit_scene: PackedScene
 
-## How fast obstacles scroll toward the player (units/second).
-## Increase over time for difficulty scaling.
-@export var scroll_speed: float = 10.0
+# ── internals ──────────────────────────────
+var _fruit_pool: Array[Node3D] = []
+var _score: int = 0
 
-## Speed increase per second (0 = constant difficulty).
-@export var speed_ramp: float = 0.5
+@onready var _spawn_timer := $SpawnTimer   # see _ready()
 
-## Maximum scroll speed cap.
-@export var max_scroll_speed: float = 35.0
-
-## Reference to the player node. If null, world origin is used as reference.
-@export var player: Node3D = null
-
-# ── Internal state ────────────────────────────────────────────────────────────
-
-var _active_obstacles: Array[Node3D] = []
-var _spawn_timer: float = 0.0
-var _next_spawn_time: float = 0.0
-
-# ── Lifecycle ─────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
-	_next_spawn_time = randf_range(spawn_interval_min, spawn_interval_max)
-	if obstacle_scenes.is_empty():
-		push_warning("ObstacleSpawner: No obstacle scenes assigned! Add at least one PackedScene.")
+	# Build the timer in code so the scene doesn't need one manually
+	if not has_node("SpawnTimer"):
+		var t := Timer.new()
+		t.name = "SpawnTimer"
+		t.wait_time = spawn_interval
+		t.autostart = true
+		add_child(t)
+		t.timeout.connect(_spawn_fruit)
+		_spawn_timer = t
+	else:
+		_spawn_timer.wait_time = spawn_interval
+		_spawn_timer.timeout.connect(_spawn_fruit)
+		_spawn_timer.start()
+
+	if fruit_scene == null:
+		push_warning("FruitSpawner: 'fruit_scene' is not set – assign a Fruit .tscn in the Inspector.")
 
 
-func _process(delta: float) -> void:
-	# --- Speed ramp ---
-	scroll_speed = minf(scroll_speed + speed_ramp * delta, max_scroll_speed)
-
-	# --- Scroll all active obstacles ---
-	var player_pos := _get_player_pos()
-	var to_remove: Array[Node3D] = []
-
-	for obs in _active_obstacles:
-		if not is_instance_valid(obs):
-			to_remove.append(obs)
-			continue
-
-		# Move obstacle toward the player (negative Z = forward in Godot 3D).
-		obs.global_position.z += scroll_speed * delta
-
-		# Despawn once it has passed far enough behind the player.
-		if obs.global_position.z > player_pos.z + despawn_distance:
-			obs.queue_free()
-			to_remove.append(obs)
-
-	for obs in to_remove:
-		_active_obstacles.erase(obs)
-
-	# --- Spawn timer ---
-	_spawn_timer += delta
-	if _spawn_timer >= _next_spawn_time:
-		_spawn_timer = 0.0
-		_next_spawn_time = randf_range(spawn_interval_min, spawn_interval_max)
-		_spawn_obstacle()
-
-
-# ── Spawning ──────────────────────────────────────────────────────────────────
-
-func _spawn_obstacle() -> void:
-	if obstacle_scenes.is_empty():
+func _spawn_fruit() -> void:
+	if fruit_scene == null:
 		return
 
-	# Pick a random scene.
-	var scene: PackedScene = obstacle_scenes[randi() % obstacle_scenes.size()]
-	var obs: Node3D = scene.instantiate() as Node3D
-	if obs == null:
-		push_error("ObstacleSpawner: Instantiated scene is not a Node3D.")
-		return
+	# ── Remove oldest fruit if pool is full ──
+	while _fruit_pool.size() >= max_fruit:
+		var oldest: Node3D = _fruit_pool.pop_front()
+		if is_instance_valid(oldest):
+			oldest.queue_free()
 
-	# Position: ahead of the player, random X offset.
-	var player_pos := _get_player_pos()
-	var spawn_pos := Vector3(
-		player_pos.x + randf_range(-x_spread, x_spread),
-		spawn_y,
-		player_pos.z - spawn_distance   # negative Z = in front
+	# ── Calculate spawn position ──
+	# Forward = -Z in Godot's default orientation; adjust if your model faces differently
+	var forward: Vector3 = -global_transform.basis.z.normalized()
+	var right: Vector3   =  global_transform.basis.x.normalized()
+
+	var offset := (
+		forward * spawn_distance
+		+ right  * randf_range(-spawn_spread, spawn_spread)
+		+ Vector3.UP * randf_range(spawn_height_min, spawn_height_max)
 	)
-	obs.global_position = spawn_pos
+	var spawn_pos: Vector3 = global_position + offset
 
-	# Add to the scene tree (as child of this spawner).
-	add_child(obs)
-	_active_obstacles.append(obs)
+	# ── Instance the fruit ──
+	var fruit: Node3D = fruit_scene.instantiate()
+	get_tree().current_scene.add_child(fruit)   # add to scene root, not the Jetski
+	fruit.global_position = spawn_pos
+
+	# Connect the "collected" signal so we can update the score
+	if fruit.has_signal("collected"):
+		fruit.collected.connect(_on_fruit_collected.bind(fruit))
+
+	_fruit_pool.append(fruit)
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
-
-func _get_player_pos() -> Vector3:
-	if player != null and is_instance_valid(player):
-		return player.global_position
-	return global_position
-
-
-## Call this to reset the spawner (e.g. on game restart).
-func reset() -> void:
-	for obs in _active_obstacles:
-		if is_instance_valid(obs):
-			obs.queue_free()
-	_active_obstacles.clear()
-	_spawn_timer = 0.0
-	_next_spawn_time = randf_range(spawn_interval_min, spawn_interval_max)
-	scroll_speed = 10.0   # reset to base speed
+func _on_fruit_collected(fruit: Node3D) -> void:
+	_score += 1
+	print("Fruit collected! Score: %d" % _score)
+	_fruit_pool.erase(fruit)
+	# fruit frees itself via its own
