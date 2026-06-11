@@ -22,6 +22,10 @@ enabled=PackedStringArray("res://addons/boujie_water_shader/plugin.cfg")
 
 import/blender/enabled=false
 
+[global_group]
+
+Player=""
+
 [input]
 
 steer_right={

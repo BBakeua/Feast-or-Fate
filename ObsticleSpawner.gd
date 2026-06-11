@@ -29,28 +29,7 @@ func _process(delta: float) -> void:
 		_try_spawn()
 	_scroll_obstacles(delta)
 
-# Runs every physics tick to check Area3D overlaps on each obstacle.
-func _physics_process(_delta: float) -> void:
-	if _hit:
-		return
-	for obs in _active_obstacles:
-		if is_instance_valid(obs):
-			_check_collision(obs)
-
-func _check_collision(obs: Node3D) -> void:
-	# Walk the obstacle's children looking for any Area3D nodes.
-	for child in obs.get_children():
-		if child is Area3D:
-			for body in (child as Area3D).get_overlapping_bodies():
-				if _is_jetski(body):
-					_on_jetski_hit()
-					return
-
-func _is_jetski(node: Node) -> bool:
-	if not jetski_group.is_empty():
-		return node.is_in_group(jetski_group)
-	# Fallback: any CharacterBody3D counts as the player.
-	return node is CharacterBody3D
+# No more _physics_process polling — signals handle collision now.
 
 func _try_spawn() -> void:
 	if obstacle_scenes.is_empty():
@@ -73,8 +52,33 @@ func _try_spawn() -> void:
 
 	_active_obstacles.append(instance)
 
+	# Connect the legacy signal if the obstacle exposes one.
 	if instance.has_signal("jetski_hit") and not instance.jetski_hit.is_connected(_on_jetski_hit):
 		instance.jetski_hit.connect(_on_jetski_hit)
+
+	# Connect body_entered on every Area3D in the obstacle tree.
+	_connect_area_signals(instance)
+
+# Recursively find all Area3D nodes and hook body_entered.
+func _connect_area_signals(node: Node) -> void:
+	if node is Area3D:
+		var area := node as Area3D
+		if not area.body_entered.is_connected(_on_body_entered_area):
+			area.body_entered.connect(_on_body_entered_area)
+	for child in node.get_children():
+		_connect_area_signals(child)
+
+# Fires the moment a physics body enters any obstacle Area3D.
+func _on_body_entered_area(body: Node3D) -> void:
+	if _hit:
+		return
+	if _is_jetski(body):
+		_on_jetski_hit()
+
+func _is_jetski(node: Node) -> bool:
+	if not jetski_group.is_empty():
+		return node.is_in_group(jetski_group)
+	return node is CharacterBody3D
 
 func _scroll_obstacles(delta: float) -> void:
 	var origin_z: float = _player_position().z
@@ -92,11 +96,10 @@ func _scroll_obstacles(delta: float) -> void:
 			to_remove.append(obs)
 			continue
 
-		# Proximity fallback — also resolves the player node on the fly via
-		# the jetski group if no direct reference was assigned.
+		# Proximity fallback in case Area3D signals are misconfigured.
 		if not _hit:
 			var target: Node3D = _resolve_player()
-			if target != null and obs.global_position.distance_to(target.global_position) < 1.5:
+			if target != null and obs.global_position.distance_to(target.global_position) < 2.0:
 				_on_jetski_hit()
 
 	for obs in to_remove:
@@ -105,7 +108,6 @@ func _scroll_obstacles(delta: float) -> void:
 func _resolve_player() -> Node3D:
 	if player != null and is_instance_valid(player):
 		return player
-	# Try to find the jetski by group as a fallback.
 	if not jetski_group.is_empty():
 		var members := get_tree().get_nodes_in_group(jetski_group)
 		if not members.is_empty() and members[0] is Node3D:
@@ -126,7 +128,6 @@ func clear_all() -> void:
 
 func set_spawning(enabled: bool) -> void:
 	set_process(enabled)
-	set_physics_process(enabled)
 
 func _on_jetski_hit(_unused = null) -> void:
 	if _hit:

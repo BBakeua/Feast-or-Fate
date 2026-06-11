@@ -42,7 +42,7 @@ shadow_mesh = SubResource("ArrayMesh_4j0cf")
 [sub_resource type="BoxShape3D" id="BoxShape3D_yubqw"]
 size = Vector3(1, 1.1628113, 3.2580566)
 
-[node name="Jetski" type="CharacterBody3D" unique_id=2138062641]
+[node name="Jetski" type="CharacterBody3D" unique_id=2138062641 groups=["Player"]]
 script = ExtResource("1_b714g")
 
 [node name="JetskiV1" type="Node3D" parent="." unique_id=1327681446]

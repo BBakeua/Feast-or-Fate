@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 func _on_body_entered(body: Node) -> void:
 	if _collected:
 		return
-	if body is Node3D:
+	if body.is_in_group("Player"):
 		_collect()
 
 
