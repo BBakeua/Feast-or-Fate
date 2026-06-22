@@ -1,154 +1,91 @@
 extends Node3D
 
-@export var obstacle_scenes: Array[PackedScene] = []
-@export var spawn_distance: float = 40.0
-@export var despawn_distance: float = 10.0
-@export var spawn_interval: float = 1.2
-@export var scroll_speed: float = 8.0
-@export var max_scroll_speed: float = 24.0
-@export var speed_ramp: float = 0.5
-@export var lane_spread_x: float = 3.0
-@export var lane_spread_y: float = 0.0
-@export var player: Node3D = null
-@export var jetski_group: String = "jetski"
-@export var restart_delay: float = 0.4
+# --- Inspector Settings ---
+@export var obstacle_scene: PackedScene          # Drag your obstacle scene here
+@export var spawn_distance: float = 40.0         # How far ahead obstacles spawn
+@export var spawn_interval: float = 2.0          # Seconds between spawns
+@export var obstacle_speed: float = 15.0         # Speed moving toward Jetski
+@export var lateral_spread: float = 4.0          # Random left/right offset
+@export var max_obstacles: int = 10              # Pool cap
 
-var _active_obstacles: Array[Node3D] = []
-var _spawn_timer: float = 0.0
-var _hit: bool = false
+@onready var jetski: Node3D = get_node("/root/Game/Jetski")  # Adjust path to match your scene
+
+var _obstacles: Array[Node3D] = []
+var _obstacle_velocities: Dictionary = {}
+var _timer: float = 0.0
 
 func _ready() -> void:
-	if obstacle_scenes.is_empty():
-		push_warning("ObstacleSpawner: no obstacle_scenes assigned!")
+	if not jetski:
+		push_error("ObstacleSpawner: Could not find Jetski node. Check the path.")
 
 func _process(delta: float) -> void:
-	scroll_speed = minf(scroll_speed + speed_ramp * delta, max_scroll_speed)
-	_spawn_timer -= delta
-	if _spawn_timer <= 0.0:
-		_spawn_timer = spawn_interval
-		_try_spawn()
-	_scroll_obstacles(delta)
+	_timer += delta
+	if _timer >= spawn_interval:
+		_timer = 0.0
+		_spawn_obstacle()
 
-# No more _physics_process polling — signals handle collision now.
+	_move_obstacles(delta)
+	_cleanup_passed_obstacles()
 
-func _try_spawn() -> void:
-	if obstacle_scenes.is_empty():
+func _spawn_obstacle() -> void:
+	if not obstacle_scene or not jetski:
 		return
+	if _obstacles.size() >= max_obstacles:
+		# Remove oldest obstacle to make room
+		var oldest = _obstacles.pop_front()
+		if is_instance_valid(oldest):
+			_obstacle_velocities.erase(oldest)
+			oldest.queue_free()
 
-	var scene: PackedScene = obstacle_scenes.pick_random()
-	var instance: Node3D = scene.instantiate() as Node3D
-	if instance == null:
-		push_error("ObstacleSpawner: scene did not instantiate as Node3D.")
-		return
+	var obstacle: Node3D = obstacle_scene.instantiate()
+	get_tree().current_scene.add_child(obstacle)
 
-	get_tree().current_scene.add_child(instance)
+	# Spawn ahead of the Jetski along its forward axis
+	var forward: Vector3 = -jetski.global_transform.basis.z
+	var right: Vector3 = jetski.global_transform.basis.x
+	var offset: float = randf_range(-lateral_spread, lateral_spread)
 
-	var origin: Vector3 = _player_position()
-	instance.global_position = Vector3(
-		origin.x + randf_range(-lane_spread_x, lane_spread_x),
-		origin.y + randf_range(-lane_spread_y, lane_spread_y),
-		origin.z - spawn_distance
-	)
+	obstacle.global_position = jetski.global_position + forward * spawn_distance + right * offset
 
-	_active_obstacles.append(instance)
+	# Lock movement direction at spawn time (toward Jetski, regardless of later rotation)
+	var move_dir: Vector3 = -forward * obstacle_speed
+	_obstacle_velocities[obstacle] = move_dir
 
-	# Connect the legacy signal if the obstacle exposes one.
-	if instance.has_signal("jetski_hit") and not instance.jetski_hit.is_connected(_on_jetski_hit):
-		instance.jetski_hit.connect(_on_jetski_hit)
+	_connect_collision(obstacle)
+	_obstacles.append(obstacle)
 
-	# Connect body_entered on every Area3D in the obstacle tree.
-	_connect_area_signals(instance)
+func _move_obstacles(delta: float) -> void:
+	for obs in _obstacles:
+		if is_instance_valid(obs) and _obstacle_velocities.has(obs):
+			obs.global_position += _obstacle_velocities[obs] * delta
 
-# Recursively find all Area3D nodes and hook body_entered.
-func _connect_area_signals(node: Node) -> void:
-	if node is Area3D:
-		var area := node as Area3D
-		if not area.body_entered.is_connected(_on_body_entered_area):
-			area.body_entered.connect(_on_body_entered_area)
-	for child in node.get_children():
-		_connect_area_signals(child)
-
-# Fires the moment a physics body enters any obstacle Area3D.
-func _on_body_entered_area(body: Node3D) -> void:
-	if _hit:
-		return
-	if _is_jetski(body):
-		_on_jetski_hit()
-
-func _is_jetski(node: Node) -> bool:
-	if not jetski_group.is_empty():
-		return node.is_in_group(jetski_group)
-	return node is CharacterBody3D
-
-func _scroll_obstacles(delta: float) -> void:
-	var origin_z: float = _player_position().z
-	var to_remove: Array[Node3D] = []
-
-	for obs in _active_obstacles:
+func _cleanup_passed_obstacles() -> void:
+	# Remove obstacles that have passed behind the Jetski
+	var to_remove: Array = []
+	for obs in _obstacles:
 		if not is_instance_valid(obs):
 			to_remove.append(obs)
 			continue
-
-		obs.global_position.z += scroll_speed * delta
-
-		if obs.global_position.z > origin_z + despawn_distance:
-			obs.queue_free()
+		if jetski and obs.global_position.z > jetski.global_position.z + 10.0:
 			to_remove.append(obs)
-			continue
-
-		# Proximity fallback in case Area3D signals are misconfigured.
-		if not _hit:
-			var target: Node3D = _resolve_player()
-			if target != null and obs.global_position.distance_to(target.global_position) < 2.0:
-				_on_jetski_hit()
+			obs.queue_free()
 
 	for obs in to_remove:
-		_active_obstacles.erase(obs)
+		_obstacles.erase(obs)
+		_obstacle_velocities.erase(obs)
 
-func _resolve_player() -> Node3D:
-	if player != null and is_instance_valid(player):
-		return player
-	if not jetski_group.is_empty():
-		var members := get_tree().get_nodes_in_group(jetski_group)
-		if not members.is_empty() and members[0] is Node3D:
-			return members[0] as Node3D
-	return null
+func _connect_collision(obstacle: Node3D) -> void:
+	# Recursively find any Area3D in the obstacle and connect its signal
+	_connect_area_signals(obstacle)
 
-func _player_position() -> Vector3:
-	var target := _resolve_player()
-	if target != null:
-		return target.global_position
-	return global_position
+func _connect_area_signals(node: Node) -> void:
+	if node is Area3D:
+		var area := node as Area3D
+		if not area.body_entered.is_connected(_on_obstacle_hit):
+			area.body_entered.connect(_on_obstacle_hit)
+	for child in node.get_children():
+		_connect_area_signals(child)
 
-func clear_all() -> void:
-	for obs in _active_obstacles:
-		if is_instance_valid(obs):
-			obs.queue_free()
-	_active_obstacles.clear()
-
-func set_spawning(enabled: bool) -> void:
-	set_process(enabled)
-
-func _on_jetski_hit(_unused = null) -> void:
-	if _hit:
-		return
-	_hit = true
-	set_spawning(false)
-
-	var target := _resolve_player()
-	if target != null:
-		_kill_jetski(target)
-	else:
-		get_tree().create_timer(restart_delay).timeout.connect(_restart_scene)
-
-func _kill_jetski(jetski: Node3D) -> void:
-	if jetski is CharacterBody3D:
-		(jetski as CharacterBody3D).velocity = Vector3.ZERO
-		jetski.set_physics_process(false)
-		jetski.set_process(false)
-
-	jetski.visible = false
-	get_tree().create_timer(restart_delay).timeout.connect(_restart_scene)
-
-func _restart_scene() -> void:
-	get_tree().reload_current_scene()
+func _on_obstacle_hit(body: Node3D) -> void:
+	if body.is_in_group("jetski"):
+		get_tree().reload_current_scene()

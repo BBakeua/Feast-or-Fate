@@ -78,6 +78,14 @@ uniform vec3 uv_tri_scale;
 uniform vec3 uv_tri_offset;
 group_uniforms;
 
+// NEW: Controls for texture panning velocities along specific axes
+group_uniforms UVScrolling;
+uniform vec2 uv_scroll_velocity = vec2(0.1, 0.1);
+uniform vec2 refraction_scroll_velocity = vec2(0.1, 0.2);
+uniform vec3 triplanar_scroll_velocity = vec3(0.1, 0.1, 0.1);
+uniform vec3 triplanar_refraction_scroll_velocity = vec3(0.1, -0.2, -0.15);
+group_uniforms;
+
 group_uniforms DepthFog;
 uniform vec4 color_deep : source_color;
 uniform vec4 color_shallow : source_color;
@@ -230,16 +238,16 @@ void vertex() {
 #endif
 	
 	
-	// Apply some constant movement 
+	// Apply constant movement using the new inspector uniforms
 #ifdef WORLD_TRIPLANAR
 	refraction_uv_tri = uv_tri;
-	refraction_uv_tri += vec3(0.1, -0.2, -0.15) * time;
-	uv_tri += vec3(0.1) * time;
+	refraction_uv_tri += triplanar_refraction_scroll_velocity * time;
+	uv_tri += triplanar_scroll_velocity * time;
 #else
 	refraction_uv = UV;
-	refraction_uv += vec2(0.1, 0.2) * time;
+	refraction_uv += refraction_scroll_velocity * time;
 #endif
-	UV += vec2(0.1)* time;
+	UV += uv_scroll_velocity * time;
 	
 	// Calculate foam alpha in vertex where it's cheaper
 #ifdef FOAM
