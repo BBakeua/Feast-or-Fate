@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://e7cbc46dvpc6" path="res://pickups_spawner.gd" id="6_jgkyn"]
 [ext_resource type="PackedScene" uid="uid://caoth7tyh4x6a" path="res://Fruit.tscn" id="7_qpaub"]
 [ext_resource type="Script" uid="uid://cu3go4ax5k1f3" path="res://ObsticleSpawner.gd" id="8_an1vu"]
+[ext_resource type="PackedScene" uid="uid://bp1xf6stfkoat" path="res://Boulder.tscn" id="9_4srsv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3rksa"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -242,4 +243,5 @@ fruit_scene = ExtResource("7_qpaub")
 
 [node name="ObstacleSpawner" type="Node3D" parent="." unique_id=639188986]
 script = ExtResource("8_an1vu")
+obstacle_scene = ExtResource("9_4srsv")
 spawn_distance = 50.0
