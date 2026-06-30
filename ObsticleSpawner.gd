@@ -8,7 +8,7 @@ extends Node3D
 @export var lateral_spread: float = 4.0          # Random left/right offset
 @export var max_obstacles: int = 10              # Pool cap
 
-@onready var jetski: Node3D = get_node("/root/Game/Jetski")  # Adjust path to match your scene
+@onready var jetski = get_tree().get_first_node_in_group("Player")
 
 var _obstacles: Array[Node3D] = []
 var _obstacle_velocities: Dictionary = {}
@@ -28,7 +28,11 @@ func _process(delta: float) -> void:
 	_cleanup_passed_obstacles()
 
 func _spawn_obstacle() -> void:
+	print("Spawn Obstacle")
 	if not obstacle_scene or not jetski:
+		print(obstacle_scene)
+		print(jetski)
+		print("errored 1")
 		return
 	if _obstacles.size() >= max_obstacles:
 		# Remove oldest obstacle to make room
@@ -36,6 +40,9 @@ func _spawn_obstacle() -> void:
 		if is_instance_valid(oldest):
 			_obstacle_velocities.erase(oldest)
 			oldest.queue_free()
+			return
+		print("not valid")
+	print("error2")
 
 	var obstacle: Node3D = obstacle_scene.instantiate()
 	get_tree().current_scene.add_child(obstacle)

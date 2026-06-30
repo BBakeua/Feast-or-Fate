@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
 	velocity.z = 0.0
 
 	move_and_slide()
-	print(global_position)
+#	print(global_position)
 
 	_lean = lerpf(_lean, steer * lean_amount, delta * 6.0)
 	rotation.z = -_lean
